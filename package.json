@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Stornitz/sqo-server/issues"
   },
-  "homepage": "https://github.com/Stornitz/sqo-server#readme"
+  "homepage": "https://github.com/Stornitz/sqo-server#readme",
+  "dependencies": {
+    "restify": "^4.0.4"
+  }
 }
