@@ -1,0 +1,19 @@
+{
+  "name": "sqo-server",
+  "version": "0.1.0",
+  "description": "Share Quickly Online Server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stornitz/sqo-server.git"
+  },
+  "author": "Stornitz",
+  "license": "SEE LICENSE IN LICENSE FILE",
+  "bugs": {
+    "url": "https://github.com/Stornitz/sqo-server/issues"
+  },
+  "homepage": "https://github.com/Stornitz/sqo-server#readme"
+}
