@@ -1,5 +1,7 @@
 'use strict';
 
+var debug = require('debug')('sqo-server:rest-server');
+
 const IMG_REGEX = /^\/i([a-zA-Z0-9]+)(?:\.(?:[pP][nN]|[jJ][pP][eE]?)[gG])?$/;
 const PASTE_REGEX = /^\/p([a-zA-Z0-9]+)/;
 const UPLOAD_REGEX = '/api/up';
@@ -19,9 +21,10 @@ module.exports = RestServer;
  * rule[1]: Path Regex
  * rule[2]: Callback function
  * rule[3]: Params to check their existence
- * @return {[type]}
  */
 var registerRule = function registerRule(server, Utils, rule) {
+	debug('registering [%s] %s', rule[0], rule[2].name);
+
 	var ruleFunc = Utils.checkArgs(rule[2], rule[3]);
 
 	server[rule[0]](rule[1], ruleFunc);
@@ -29,6 +32,7 @@ var registerRule = function registerRule(server, Utils, rule) {
 
 RestServer.prototype.register = 
 	function register(Utils, displayHandler, apiHandler) {
+	debug('registering rules');
 
 	var rules = [
 		// GET => /
@@ -56,8 +60,11 @@ RestServer.prototype.register =
 };
 
 RestServer.prototype.start = function start(port, callback) {
+	debug('starting server');
+
 	var server = this.server;
 	server.listen(port, function onStart() {
+		debug('server started');
 		callback(server);
 	});
 };
