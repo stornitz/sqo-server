@@ -14,23 +14,28 @@ Share Quickly Online Server _(InDev)_
 ### GET - `/i<hash>`
 Display an image.
 
-Exact (JS) regex: `^\/i([a-zA-Z0-9]+)(?:\.(?:[pP][nN]|[jJ][pP][eE]?)[gG])?$`
+Exact (JS) regex: `^\/i[a-zA-Z0-9]+(\.([pP][nN]|[jJ][pP][eE]?)[gG])?$`
+
 ### GET - `/p<hash>`
 Display a paste.
 
-Exact (JS) regex `^\/p([a-zA-Z0-9]+)`
+Exact (JS) regex `^\/p[a-zA-Z0-9]+`
+
 ### GET - `/about`
 Information about the SQO Server
+
 ## API
 ### DELETE - `/i<hash>`
 Delete an image
+
+Exact (JS) regex: `^\/i[a-zA-Z0-9]+(\.([pP][nN]|[jJ][pP][eE]?)[gG])?$`
+
 **Require Auth.**
 
-Exact (JS) regex: `^\/i([a-zA-Z0-9]+)(?:\.(?:[pP][nN]|[jJ][pP][eE]?)[gG])?$`
 ### DELETE - `/p<hash>`
 Delete a paste
 
-Exact (JS) regex `^\/p([a-zA-Z0-9]+)`
+Exact (JS) regex `^\/p[a-zA-Z0-9]+`
 
 **Require Auth.**
 
