@@ -1,11 +1,23 @@
-export function onDeleteImage() {
-	return 204; // Not implemented (204: No content)
-};
+class APIHandler {
+	constructor(db, config) {
+		this.db = db;
+		this.config = config;
+	}
 
-export function onUpload() {
-	return 204; // Not implemented (204: No content)
-};
+	onDeleteImage(send) {
+		send(204); // Not implemented (204: No content)
+	}
 
-export function onGetHistory() {
-	return 204; // Not implemented (204: No content)
-};
+	onDeletePaste(send) {
+		send(204); // Not implemented (204: No content)
+	}
+
+	onUpload(send) {
+		send(204); // Not implemented (204: No content)
+	}
+
+	onGetHistory(send) {
+		send(204); // Not implemented (204: No content)
+	}
+}
+export default APIHandler;

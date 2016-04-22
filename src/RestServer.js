@@ -1,14 +1,12 @@
 const debug = require('debug')('sqo:rest-server');
 
-import checkArgs from './utils';
+import checkArgs, {safe} from './utils';
 import * as restify from 'restify';
 
 const IMG_REGEX = /^\/i([a-zA-Z0-9]+)(?:\.(?:[pP][nN]|[jJ][pP][eE]?)[gG])?$/;
 const PASTE_REGEX = /^\/p([a-zA-Z0-9]+)/;
-const UPLOAD_REGEX = '/api/up';
-const HISTORY_REGEX = '/api/hist';
 
-export default class RestServer {
+class RestServer {
 
 	constructor() {
 		this.server = restify.createServer(); 
@@ -22,22 +20,25 @@ export default class RestServer {
 
 		let rules = [
 			// GET => /
-			['get'  , '/'           , displayHandler.onHelloWorld] ,
+			['get'  , '/about'    , displayHandler , displayHandler.onAbout] ,
 
 			// GET => /i<hash>(.png|.jpe?g)
-			['get'  , IMG_REGEX     , displayHandler.onShowImage] ,
+			['get'  , IMG_REGEX   , displayHandler , displayHandler.onShowImage   , [0]] ,
 
 			// GET => /p<hash> 
-			['get'  , PASTE_REGEX   , displayHandler.onShowPaste] ,
+			['get'  , PASTE_REGEX , displayHandler , displayHandler.onShowPaste   , [0]] ,
 
 			// [Auth] DELETE => /i<hash>(.png|.jpe?g) 
-			['del'  , IMG_REGEX     , apiHandler.onDeleteImage] ,
+			['del'  , IMG_REGEX   , apiHandler     , apiHandler.onDeleteImage]    ,
+
+			// [Auth] DELETE => /p<hash>
+			['del'  , PASTE_REGEX , apiHandler     , apiHandler.onDeletePaste]    ,
 
 			// [Auth] POST => /api/up 
-			['post' , UPLOAD_REGEX  , apiHandler.onUpload] ,
+			['post' , '/api/up'   , apiHandler     , apiHandler.onUpload]         ,
 
 			// [Auth] POST => /api/hist 
-			['post' , HISTORY_REGEX , apiHandler.onGetHistory]
+			['post' , '/api/hist' , apiHandler     , apiHandler.onGetHistory]
 		];
 
 		for(let i in rules) {
@@ -45,10 +46,12 @@ export default class RestServer {
 		}
 	}
 
-	_registerRule(method, path, callback, args = []) {
+	_registerRule(method, path, entity, callback, args = []) {
+		callback = safe(callback);
+
 		debug('registering [%s] %s', method, callback.name);
 
-		let ruleFunc = checkArgs(this._safe(callback), args);
+		let ruleFunc = checkArgs(entity, callback, args);
 
 		this.server[method](path, ruleFunc);
 	};
@@ -56,15 +59,12 @@ export default class RestServer {
 	start(port, callback) {
 		debug('starting server');
 
-		callback = this._safe(callback);
+		callback = safe(callback);
 
 		this.server.listen(port, () => {
 			debug('server started');
 			callback(this.server.url);
 		});
 	};
-
-	_safe(func) {
-		return typeof func == 'function' ? func : () => {};
-	}
 }
+export default RestServer;
