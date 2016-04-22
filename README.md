@@ -2,13 +2,13 @@
 Share Quickly Online Server _(InDev)_
 
 # API Endpoints
-- GET - `/i<hash>`
-- GET - `/p<hash>`
-- GET - `/about`
-- DELETE - `/i<hash>`
-- DELETE - `/p<hash>`
-- POST - `/api/up`
-- POST - `/api/hist`
+- [GET - `/i<hash>`](#get---ihash)
+- [GET - `/p<hash>`](#get---phash)
+- [GET - `/about`](#get---about)
+- [DELETE - `/i<hash>`](#delete---ihash)
+- [DELETE - `/p<hash>`](#delete---phash)
+- [POST - `/api/up`](#post---apiup)
+- [POST - `/api/hist`](#post---apihist)
 
 ## View
 ### GET - `/i<hash>`
