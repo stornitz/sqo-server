@@ -1,5 +1,7 @@
-*.db
-*.log
 node_modules
 lib
+uploads
+
+*.db
 *.sqlite3
+*.log
