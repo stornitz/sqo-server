@@ -6,6 +6,7 @@
   "scripts": {
     "clean": "rm -rf ./lib",
     "start": "node ./lib/main.js",
+    "adduser": "node ./lib/add-user.js",
     "dev": "./node_modules/.bin/babel src -d lib --source-maps && npm start",
     "build": "./node_modules/.bin/babel src -d lib"
   },

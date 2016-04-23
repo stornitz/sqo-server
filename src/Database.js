@@ -109,5 +109,21 @@ class Database {
 				debug('error updating nb view of file %s : %s', id, err);
 		})
 	}
+
+	addUser(userId, token, callback) {
+		debug('adding user %s', userId);
+
+		callback = safe(callback);
+
+		this.db.run(`INSERT INTO users (id, token) VALUES ($userId, $token)`, {
+				$userId: userId,
+				$token: token
+			}, (err) => {
+				if(err)
+					debug('error adding user %s: %s', userId, err);
+
+				callback(err);
+			})
+	}
 }
 export default Database;
