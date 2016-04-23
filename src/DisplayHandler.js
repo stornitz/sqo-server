@@ -2,7 +2,7 @@ const debug = require('debug')('sqo:display-handler');
 
 import {TYPE_IMAGE, TYPE_PASTE} from './Database';
 import * as path from 'path';
-import {readFile} from 'fs';
+import * as fs from 'fs';
 
 class DisplayHandler {
 	constructor(db, config) {
@@ -30,20 +30,20 @@ class DisplayHandler {
 	}
 
 	_display(type, hash, send, prefix) {
-		this.db.getFile(type, hash, (row) => {
-			if(row == null)
+		this.db.getFile(type, hash, (file) => {
+			if(file == null)
 				return send(404, prefix + ' not found.');
 
-			debug('displaying file %s', row.id);
+			debug('displaying file %s', file.id);
 
-			let filePath = path.join('.', this.config.upload_dir, row.filename);
+			let filePath = path.join('.', this.config.upload_dir, file.filename);
 
-			readFile(filePath, (err, file) => {
+			fs.readFile(filePath, (err, file) => {
 				if(err) 
 					return send(500, 'File not found.');
 
 				send(200, file);
-				this.db.incrementViews(row.id);
+				this.db.incrementViews(file.id);
 			})
 		});
 	}

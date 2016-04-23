@@ -1,12 +1,12 @@
 const debug = require('debug')('sqo:config-manager');
 
-import {readFileSync} from 'fs';
+import * as fs from 'fs';
 
 const CONFIG_FILE = './config.json';
 
 export default function getConfig() {
 	debug('loading config')
-	let data = readFileSync(CONFIG_FILE);
+	let data = fs.readFileSync(CONFIG_FILE);
 
 	let config;
 	try {

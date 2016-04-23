@@ -2,7 +2,7 @@ const debug = require('debug')('sqo:config-manager');
 
 import getConfig from './ConfigManager';
 import Database from './Database';
-import {randomBytes} from 'crypto';
+import * as crypto from 'crypto';
 
 const config = getConfig();
 
@@ -59,7 +59,7 @@ function addUser(username) {
 }
 
 function getToken() {
-	return randomBytes(24).toString('hex');
+	return crypto.randomBytes(24).toString('hex');
 }
 
 // Let's go !
