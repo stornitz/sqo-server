@@ -43,6 +43,8 @@ function argsExists(array, argsKeysList) {
 	return exist;
 }
 
+function safeCB() {}
+
 export function safe(func) {
-	return typeof func == 'function' ? func : function safeCB() {};
+	return typeof func == 'function' ? func : safeCB;
 }
