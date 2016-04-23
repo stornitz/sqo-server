@@ -38,7 +38,7 @@ class RestServer {
 			['post' , '/api/up'   , apiHandler     , apiHandler.onUpload]         ,
 
 			// [Auth] POST => /api/hist 
-			['post' , '/api/hist' , apiHandler     , apiHandler.onGetHistory]
+			['post' , '/api/hist' , apiHandler     , apiHandler.onGetHistory, ['username', 'token']]
 		];
 
 		for(let i in rules) {

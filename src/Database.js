@@ -118,6 +118,22 @@ class Database {
 			})
 	}
 
+	getUserFiles(userId, callback) {
+		debug('getting user %s files', userId);
+
+		callback = safe(callback);
+
+		this.db.all(`SELECT * FROM files WHERE user_id = $userId`,
+			{
+				$userId: userId
+			}, (err, rows) => {
+				if(err)
+					debug('getting user %s files : %s', userId, err);
+
+				callback(rows);
+			})
+	}
+
 	deleteFile(fileId, callback) {
 		debug('deleting file %s', fileId);
 

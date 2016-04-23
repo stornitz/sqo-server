@@ -52,8 +52,16 @@ class APIHandler {
 		send(204); // Not implemented (204: No content)
 	}
 
-	onGetHistory(send) {
-		send(204); // Not implemented (204: No content)
+	onGetHistory(send, username, token) {
+		db.getUser(user, token, (user) => {
+			if(!user)
+				return send(403); // (403: Forbidden)
+
+			debug('getting user %s files', user.id)
+			db.getUserFiles(user.id, (files) => {
+				send(files == null ? {} : files);
+			});
+		});
 	}
 }
 export default APIHandler;
