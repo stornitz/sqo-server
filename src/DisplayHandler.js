@@ -21,16 +21,16 @@ class DisplayHandler {
 
 	// TODO Support Twitter
 	onShowImage(send, hash) {
-		this.db.get(TYPE_IMAGE, hash, this._display(send, 'Image'));
+		_display(TYPE_IMAGE, hash, send, 'Image');
 	}
 
 	// TODO Support Twitter
 	onShowPaste(send, hash) {
-		this.db.get(TYPE_PASTE, hash, this._display(send, 'Paste'));
+		_display(TYPE_PASTE, hash, send, 'Image');
 	}
 
-	_display(send, prefix) {
-		return (row) => {
+	_display(type, hash, send, prefix) {
+		this.db.getFile(type, hash, (row) => {
 			if(row == null)
 				return send(404, prefix + ' not found.');
 
@@ -45,7 +45,7 @@ class DisplayHandler {
 				send(200, file);
 				this.db.incrementViews(row.id);
 			})
-		}
+		});
 	}
 }
 export default DisplayHandler;

@@ -82,7 +82,7 @@ class Database {
 			})
 	}
 
-	get(type, hash, callback) {
+	getFile(type, hash, callback) {
 		debug('getting hash %s with type %s', hash, type);
 
 		callback = safe(callback);
