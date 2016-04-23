@@ -20,25 +20,25 @@ class RestServer {
 
 		let rules = [
 			// GET => /
-			['get'  , '/about'    , displayHandler , displayHandler.onAbout] ,
+			['get'  , '/about'    , displayHandler , displayHandler.onAbout]    ,
 
 			// GET => /i<hash>(.png|.jpe?g)
-			['get'  , IMG_REGEX   , displayHandler , displayHandler.onShowImage   , [0]] ,
+			['get'  , IMG_REGEX   , displayHandler , displayHandler.onShowImage , [0]] ,
 
 			// GET => /p<hash> 
-			['get'  , PASTE_REGEX , displayHandler , displayHandler.onShowPaste   , [0]] ,
+			['get'  , PASTE_REGEX , displayHandler , displayHandler.onShowPaste , [0]] ,
 
 			// [Auth] DELETE => /i<hash>(.png|.jpe?g) 
-			['del'  , IMG_REGEX   , apiHandler     , apiHandler.onDeleteImage, [0, 'username', 'token']]    ,
+			['del'  , IMG_REGEX   , apiHandler     , apiHandler.onDeleteImage   , [0, 'username' , 'token']] ,
 
 			// [Auth] DELETE => /p<hash>
-			['del'  , PASTE_REGEX , apiHandler     , apiHandler.onDeletePaste, [0, 'username', 'token']]    ,
+			['del'  , PASTE_REGEX , apiHandler     , apiHandler.onDeletePaste   , [0, 'username' , 'token']] ,
 
 			// [Auth] POST => /api/up 
-			['post' , '/api/up'   , apiHandler     , apiHandler.onUpload]         ,
+			['post' , '/api/up'   , apiHandler     , apiHandler.onUpload]       ,
 
 			// [Auth] POST => /api/hist 
-			['post' , '/api/hist' , apiHandler     , apiHandler.onGetHistory, ['username', 'token']]
+			['post' , '/api/hist' , apiHandler     , apiHandler.onGetHistory    , ['username' , 'token']]
 		];
 
 		for(let i in rules) {
