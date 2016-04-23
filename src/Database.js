@@ -50,6 +50,7 @@ class Database {
 			`CREATE TABLE users (
 				\`id\` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 				\`name\` varchar(25) NOT NULL UNIQUE,
+				\`url\` varchar(50),
 				\`twitter\` varchar(40),
 				\`redirect_url\` varchar(80),
 				\`token\` varchar(24) NOT NULL
@@ -61,15 +62,16 @@ class Database {
 			});
 	}
 
-	addFile(type, hash, filename, originalName, callback) {
+	addFile(userId, type, hash, filename, originalName, callback) {
 		debug('adding file %s (type %s) with hash %s', originalName, type, hash);
 
 		callback = safe(callback);
 
 		this.db.run(
-			`INSERT INTO files (hash, type, filename, original_name, upload_date)
-			VALUES ($hash, $type, $filename, $original_name, $upload_date)
+			`INSERT INTO files (user_id, hash, type, filename, original_name, upload_date)
+			VALUES ($userId, $hash, $type, $filename, $original_name, $upload_date)
 			`, {
+				$userId: userId,
 				$hash: hash,
 				$type: type,
 				$filename: filename,
@@ -131,6 +133,40 @@ class Database {
 					debug('getting user %s files : %s', userId, err);
 
 				callback(rows);
+			})
+	}
+
+	getUser(username, token, callback) {
+		debug('getting user %s', username);
+
+		callback = safe(callback);
+
+		this.db.get(`SELECT * FROM users WHERE name = $username AND token = $token`,
+			{
+				$username: username,
+				$token: token
+			}, (err, row) => {
+				if(err)
+					debug('getting user %s : %s', username, err);
+
+				callback(row);
+			})
+	}
+
+	hashAvailable(type, hash, callback) {
+		debug('checking hash %s (type %s)', hash, type);
+
+		callback = safe(callback);
+
+		this.db.get(`SELECT id FROM files WHERE type = $type AND hash = $hash`,
+			{
+				$type: type,
+				$hash: hash
+			}, (err, row) => {
+				if(err)
+					debug('error checking hash %s (type %s) : %s', hash, type, err);
+
+				callback(row == null);
 			})
 	}
 

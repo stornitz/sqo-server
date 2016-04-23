@@ -8,7 +8,6 @@ export default function checkArgs(entity, func, argsKeysList) {
 			res.send(400); // 400: Bad Request
 			next();
 		} else {
-
 			let argsLists = argsKeysList.map(key => req.params[key]);
 
 			let send = function(head, body) {
@@ -22,7 +21,7 @@ export default function checkArgs(entity, func, argsKeysList) {
 				next();
 			}
 
-			func.call(entity, send, ...argsLists);
+			func.call(entity, send, ...argsLists, req.files);
 		}
 	}
 }
@@ -47,4 +46,20 @@ function safeCB() {}
 
 export function safe(func) {
 	return typeof func == 'function' ? func : safeCB;
+}
+
+function random(min, max) {
+	return Math.floor(Math.random() * (1 + max - min)) + min;  
+}
+
+const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+export function genHash() {
+	let hash = '';
+	let length = random(3, 7);
+	let charsLength = chars.length - 1;
+
+	for(let i = 0; i < length; i++)
+		hash += chars.charAt(random(0, charsLength));
+
+	return hash;
 }

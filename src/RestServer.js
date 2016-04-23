@@ -12,7 +12,11 @@ class RestServer {
 		this.server = restify.createServer(); 
 
 		this.server.pre(restify.pre.userAgentConnection());
-		this.server.use(restify.bodyParser());
+		this.server.use(restify.bodyParser({
+			mapParams: true,
+			//mapFiles: true,
+			keepExtensions: true
+		}));
 	}
 
 	register(displayHandler, apiHandler) {
@@ -35,7 +39,7 @@ class RestServer {
 			['del'  , PASTE_REGEX , apiHandler     , apiHandler.onDeletePaste   , [0, 'username' , 'token']] ,
 
 			// [Auth] POST => /api/up 
-			['post' , '/api/up'   , apiHandler     , apiHandler.onUpload]       ,
+			['post' , '/api/up'   , apiHandler     , apiHandler.onUpload        , ['username', 'token']] ,
 
 			// [Auth] POST => /api/hist 
 			['post' , '/api/hist' , apiHandler     , apiHandler.onGetHistory    , ['username' , 'token']]
