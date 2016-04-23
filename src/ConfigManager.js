@@ -18,6 +18,7 @@ export default function getConfig() {
 
 	config.port = _default(config.port, 8080);
 	config.upload_dir = _default(config.upload_dir, 'uploads');
+	config.db_file = _default(config.db_file, 'db.sqlite3');
 
 	return config;
 }

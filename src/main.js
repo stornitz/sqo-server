@@ -7,9 +7,9 @@ import DisplayHandler from './DisplayHandler';
 import APIHandler from './APIHandler';
 import 'source-map-support/register'
 
-const db = new Database();
-
 const config = getConfig();
+
+const db = new Database(config.db_file);
 
 const displayHandler = new DisplayHandler(db, config);
 const apiHandler = new APIHandler(db, config);

@@ -7,15 +7,14 @@ import {safe} from './utils';
 
 export const TYPE_IMAGE = 1;
 export const TYPE_PASTE = 2;
-const DB_FILE = 'db.sqlite3';
 
 class Database {
 
-	constructor() {
-		let exists = existsSync(DB_FILE);
+	constructor(dbFile) {
+		let exists = existsSync(dbFile);
 		debug('database file %sfound', exists ? '' : 'not ');
 
-		this.db = new sqlite3.Database(DB_FILE, (err) => {
+		this.db = new sqlite3.Database(dbFile, (err) => {
 			if(err) 
 				throw Error('Error loading db file: %s', err);
 
@@ -31,6 +30,7 @@ class Database {
 		this.db.run(
 			`CREATE TABLE files (
 				\`id\` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+				\`user_id\` int(11) NOT NULL,
 				\`hash\` varchar(20) NOT NULL,
 				\`type\` int(11) NOT NULL,
 				\`filename\` varchar(25) NOT NULL,
@@ -41,10 +41,23 @@ class Database {
 					UNIQUE(\`hash\`, \`type\`) ON CONFLICT FAIL
 			)`, [], (err) => {
 				if(err) 
-					throw Error('Error creating database: %s', err);
+					throw Error('Error creating table files: ' + err);
 
 				debug('table files created');
-			})
+			});
+
+		this.db.run(
+			`CREATE TABLE users (
+				\`id\` varchar(25) NOT NULL PRIMARY KEY UNIQUE,
+				\`twitter\` varchar(40),
+				\`redirect_url\` varchar(80),
+				\`token\` varchar(24) NOT NULL
+			)`, [], (err) => {
+				if(err) 
+					throw Error('Error creating table users: ' + err);
+
+				debug('table users created');
+			});
 	}
 
 	addFile(type, hash, filename, originalName, callback) {
