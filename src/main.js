@@ -2,7 +2,7 @@ const debug = require('debug')('sqo:main');
 
 import getConfig from './ConfigManager';
 import RestServer from './RestServer';
-import Database, {TYPE_PASTE} from './Database';
+import Database from './Database';
 import DisplayHandler from './DisplayHandler';
 import APIHandler from './APIHandler';
 import 'source-map-support/register'
