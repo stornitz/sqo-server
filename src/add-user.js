@@ -19,9 +19,9 @@ const idRegex = /^[a-z0-9-_]+$/;
 
 function askId() {
 	debug('asking question...');
-	rl.question('Please enter the user unique identifier (ex: blackcat): ', (answer) => {
+	rl.question('Please enter the username (ex: blackcat): ', (answer) => {
 		if(!answer.match(idRegex)) {
-			console.log('Error: identifiers can only contains:')
+			console.log('Error: usernames can only contains:')
 			console.log('  * lowercase letter : a-z');
 			console.log('  * digit            : 0-9');
 			console.log('  * dash             : -');
@@ -35,12 +35,12 @@ function askId() {
 	});
 }
 
-function addUser(userId) {
+function addUser(username) {
 	debug('adding user');
 	console.log('Generating user auth token...');
 	const token = getToken();
 	debug('adding user in the database');
-	db.addUser(userId, token, (err) => {
+	db.addUser(username, token, (err) => {
 		if(err) {
 			console.log('Error adding user in the database: %s', err);
 			return;
@@ -49,12 +49,12 @@ function addUser(userId) {
 		console.log()
 		console.log('################################################################');
 		console.log('## Authentication informations: ');
-		console.log('##  Login     : %s', userId);
+		console.log('##  Login     : %s', username);
 		console.log('##  AuthToken : %s ', token);
 		console.log('################################################################');
 		console.log('Use the information above to login in your SQO-Client.');
 		console.log();
-		console.log('"%s" added in the database.', userId);
+		console.log('"%s" added in the database.', username);
 	});
 }
 

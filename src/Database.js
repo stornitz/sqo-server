@@ -48,7 +48,8 @@ class Database {
 
 		this.db.run(
 			`CREATE TABLE users (
-				\`id\` varchar(25) NOT NULL PRIMARY KEY UNIQUE,
+				\`id\` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+				\`name\` varchar(25) NOT NULL UNIQUE,
 				\`twitter\` varchar(40),
 				\`redirect_url\` varchar(80),
 				\`token\` varchar(24) NOT NULL
@@ -110,17 +111,17 @@ class Database {
 		})
 	}
 
-	addUser(userId, token, callback) {
-		debug('adding user %s', userId);
+	addUser(username, token, callback) {
+		debug('adding user %s', username);
 
 		callback = safe(callback);
 
-		this.db.run(`INSERT INTO users (id, token) VALUES ($userId, $token)`, {
-				$userId: userId,
+		this.db.run(`INSERT INTO users (name, token) VALUES ($username, $token)`, {
+				$username: username,
 				$token: token
 			}, (err) => {
 				if(err)
-					debug('error adding user %s: %s', userId, err);
+					debug('error adding user %s: %s', username, err);
 
 				callback(err);
 			})
