@@ -1,7 +1,7 @@
 const debug = require('debug')('sqo:database');
 
 import * as sqlite3 from 'sqlite3';
-import {existsSync} from 'fs';
+import * as fs from 'fs';
 import {safe} from './utils';
 
 
@@ -11,7 +11,7 @@ export const TYPE_PASTE = 2;
 class Database {
 
 	constructor(dbFile) {
-		let exists = existsSync(dbFile);
+		let exists = fs.existsSync(dbFile);
 		debug('database file %sfound', exists ? '' : 'not ');
 
 		this.db = new sqlite3.Database(dbFile, (err) => {
@@ -98,6 +98,40 @@ class Database {
 
 				callback(row);
 			})
+	}
+
+	getFileWithUser(type, hash, userId, callback) {
+		debug('getting hash %s with type %s, user %s', hash, type, userId);
+
+		callback = safe(callback);
+
+		this.db.get(`SELECT * FROM files WHERE hash = $hash AND type = $type AND user_id = $userId`,
+			{
+				$hash: hash,
+				$type: type,
+				$userId: userId
+			}, (err, row) => {
+				if(err)
+					debug('error getting hash %s type %s, user %s: %s', hash, type, userId, err);
+
+				callback(row);
+			})
+	}
+
+	deleteFile(fileId, callback) {
+		debug('deleting file %s', fileId);
+
+		callback = safe(callback);
+
+		this.db.run(`DELETE FROM files WHERE id = $fileId`,
+			{
+				$fileId: fileId
+			}, (err) => {
+				if(err)
+					debug('error deleting file %s : %s', fileId, err);
+
+				callback(err);
+			});
 	}
 
 	incrementViews(id) {

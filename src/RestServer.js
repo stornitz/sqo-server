@@ -29,10 +29,10 @@ class RestServer {
 			['get'  , PASTE_REGEX , displayHandler , displayHandler.onShowPaste   , [0]] ,
 
 			// [Auth] DELETE => /i<hash>(.png|.jpe?g) 
-			['del'  , IMG_REGEX   , apiHandler     , apiHandler.onDeleteImage]    ,
+			['del'  , IMG_REGEX   , apiHandler     , apiHandler.onDeleteImage, [0, 'username', 'token']]    ,
 
 			// [Auth] DELETE => /p<hash>
-			['del'  , PASTE_REGEX , apiHandler     , apiHandler.onDeletePaste]    ,
+			['del'  , PASTE_REGEX , apiHandler     , apiHandler.onDeletePaste, [0, 'username', 'token']]    ,
 
 			// [Auth] POST => /api/up 
 			['post' , '/api/up'   , apiHandler     , apiHandler.onUpload]         ,
