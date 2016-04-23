@@ -21,12 +21,12 @@ class DisplayHandler {
 
 	// TODO Support Twitter
 	onShowImage(send, hash) {
-		_display(TYPE_IMAGE, hash, send, 'Image');
+		this._display(TYPE_IMAGE, hash, send, 'Image');
 	}
 
 	// TODO Support Twitter
 	onShowPaste(send, hash) {
-		_display(TYPE_PASTE, hash, send, 'Image');
+		this._display(TYPE_PASTE, hash, send, 'Image');
 	}
 
 	_display(type, hash, send, prefix) {

@@ -16,19 +16,19 @@ class APIHandler {
 	}
 
 	onDeleteImage(send, hash, username, token) {
-		_delete(send, TYPE_IMAGE, hash, username, token);
+		this._delete(send, TYPE_IMAGE, hash, username, token);
 	}
 
 	onDeletePaste(send) {
-		_delete(send, TYPE_PASTE, hash, username, token);
+		this._delete(send, TYPE_PASTE, hash, username, token);
 	}
 
 	_delete(send, type, hash, username, token) {
-		db.getUser(user, token, (user) => {
+		this.db.getUser(user, token, (user) => {
 			if(!user)
 				return send(401); // (401: Unauthorized)
 
-			db.getFileWithUser(type, hash, user.id, (file) => {
+			this.db.getFileWithUser(type, hash, user.id, (file) => {
 				if(!file)
 					return send(403); // (403: Forbidden)
 
@@ -40,7 +40,7 @@ class APIHandler {
 						return send(500, 'Error deleting file. (fs)');
 
 					debug('deleting file (db) %s', file.id);
-					db.deleteFile(file.id, (err) => {
+					this.db.deleteFile(file.id, (err) => {
 						if(err)
 							return send(500, 'Error deleting file. (db)');
 
@@ -65,16 +65,6 @@ class APIHandler {
 
 			let type = getType(file.type);
 			this._saveFile(send, user, file, type);
-
-			
-			//let filePath = path.join('.', this.config.upload_dir, file.filename);
-/*
-			debug('saving user %s file', user.id);
-			fs.writeFile('message.txt', 'Hello Node.js', (err) => {
-				if (err) throw err;
-				console.log('It\'s saved!');
-			});*/
-			send(200);
 		});
 	}
 
@@ -106,12 +96,12 @@ class APIHandler {
 	}
 
 	onGetHistory(send, username, token) {
-		db.getUser(user, token, (user) => {
+		this.db.getUser(user, token, (user) => {
 			if(!user)
 				return send(403); // (403: Forbidden)
 
 			debug('getting user %s files', user.id)
-			db.getUserFiles(user.id, (files) => {
+			this.db.getUserFiles(user.id, (files) => {
 				send(files == null ? {} : files);
 			});
 		});
