@@ -14,7 +14,7 @@ class RestServer {
 		this.server.pre(restify.pre.userAgentConnection());
 		this.server.use(restify.bodyParser({
 			mapParams: true,
-			//mapFiles: true,
+			mapFiles: false,
 			keepExtensions: true
 		}));
 	}

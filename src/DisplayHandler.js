@@ -36,13 +36,13 @@ class DisplayHandler {
 
 			debug('displaying file %s', file.id);
 
-			let filePath = path.join('.', this.config.upload_dir, file.filename);
+			let filePath = path.join('.', this.config.upload_dir, file.username, file.filename);
 
-			fs.readFile(filePath, (err, file) => {
+			fs.readFile(filePath, (err, fileData) => {
 				if(err) 
 					return send(500, 'File not found.');
 
-				send(200, file);
+				send(200, fileData);
 				this.db.incrementViews(file.id);
 			})
 		});

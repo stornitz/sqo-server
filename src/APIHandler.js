@@ -19,12 +19,12 @@ class APIHandler {
 		this._delete(send, TYPE_IMAGE, hash, username, token);
 	}
 
-	onDeletePaste(send) {
+	onDeletePaste(send, hash, username, token) {
 		this._delete(send, TYPE_PASTE, hash, username, token);
 	}
 
 	_delete(send, type, hash, username, token) {
-		this.db.getUser(user, token, (user) => {
+		this.db.getUser(username, token, (user) => {
 			if(!user)
 				return send(401); // (401: Unauthorized)
 
@@ -32,17 +32,20 @@ class APIHandler {
 				if(!file)
 					return send(403); // (403: Forbidden)
 
-				let filePath = path.join('.', this.config.upload_dir, file.filename);
+				let filePath = path.join('.', this.config.upload_dir, user.name, file.filename);
 
 				debug('deleting file (fs) %s', filePath);
 				fs.unlink(filePath, (err) => {
-					if(err)
+					if(err) {
+						debug('error deleting file (fs) : %s', err);
 						return send(500, 'Error deleting file. (fs)');
+					}
 
 					debug('deleting file (db) %s', file.id);
 					this.db.deleteFile(file.id, (err) => {
-						if(err)
+						if(err) {
 							return send(500, 'Error deleting file. (db)');
+						}
 
 						send(200);
 					})
@@ -87,7 +90,7 @@ class APIHandler {
 					if(!ok)
 						return send(500, 'Error saving file (db).');
 
-					send(201, {
+					send({
 						url: getUrl(user, hash, type)
 					});
 				})

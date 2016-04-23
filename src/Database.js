@@ -90,7 +90,7 @@ class Database {
 
 		callback = safe(callback);
 
-		this.db.get(`SELECT * FROM files WHERE hash = $hash AND type = $type`,
+		this.db.get(`SELECT files.id, files.filename, users.name AS username FROM files LEFT JOIN users ON files.user_id = users.id WHERE hash = $hash AND type = $type`,
 			{
 				$hash: hash,
 				$type: type
